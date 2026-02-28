@@ -72,9 +72,9 @@ async function startServer() {
   });
 
   // Deletar aluno
-  app.delete("/api/students/:id", async (req, res) => {
+  app.delete(["/api/students", "/api/students/:id"], async (req, res) => {
     try {
-      const id = req.params.id ?? (req.query.id as string);
+      const id = (req.params.id || (req.query.id as string) || "").trim();
 
       if (!id || typeof id !== "string") {
         return res.status(400).json({ message: "ID inválido" });
@@ -130,9 +130,9 @@ async function startServer() {
     }
   });
 
-  app.patch("/api/schedules/:id", async (req, res) => {
+  app.patch(["/api/schedules", "/api/schedules/:id"], async (req, res) => {
     try {
-      const id = req.params.id ?? (req.query.id as string);
+      const id = (req.params.id || (req.query.id as string) || "").trim();
       const { status } = req.body ?? {};
       if (!id) return res.status(400).json({ message: "ID ausente" });
       if (!status) return res.status(400).json({ message: "status ausente" });
@@ -148,9 +148,9 @@ async function startServer() {
     }
   });
 
-  app.delete("/api/schedules/:id", async (req, res) => {
+  app.delete(["/api/schedules", "/api/schedules/:id"], async (req, res) => {
     try {
-      const id = req.params.id ?? (req.query.id as string);
+      const id = (req.params.id || (req.query.id as string) || "").trim();
       if (!id) return res.status(400).json({ message: "ID ausente" });
       const { error } = await supabase.from("schedules").delete().eq("id", id);
       if (error) return res.status(500).json({ message: error.message });
@@ -201,9 +201,9 @@ async function startServer() {
     }
   });
 
-  app.patch("/api/financial/:id", async (req, res) => {
+  app.patch(["/api/financial", "/api/financial/:id"], async (req, res) => {
     try {
-      const id = req.params.id ?? (req.query.id as string);
+      const id = (req.params.id || (req.query.id as string) || "").trim();
       const { status } = req.body ?? {};
       if (!id) return res.status(400).json({ message: "ID ausente" });
       if (!status) return res.status(400).json({ message: "status ausente" });
@@ -218,9 +218,9 @@ async function startServer() {
     }
   });
 
-  app.delete("/api/financial/:id", async (req, res) => {
+  app.delete(["/api/financial", "/api/financial/:id"], async (req, res) => {
     try {
-      const id = req.params.id ?? (req.query.id as string);
+      const id = (req.params.id || (req.query.id as string) || "").trim();
       if (!id) return res.status(400).json({ message: "ID ausente" });
       const { error } = await supabase.from("financial_entries").delete().eq("id", id);
       if (error) return res.status(500).json({ message: error.message });

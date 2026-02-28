@@ -30,7 +30,6 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface Student {
   id: string;
@@ -65,7 +64,6 @@ interface FinancialEntry {
 
 type Page = 'dashboard' | 'agenda' | 'financeiro';
 
-// â”€â”€â”€ App â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function App() {
   const [page, setPage] = useState<Page>('dashboard');
@@ -89,7 +87,7 @@ export default function App() {
         </div>
 
         <div className="mt-auto p-6 border-t border-slate-100">
-          <NavItem icon={<Settings size={20} />} label="ConfiguraÃ§Ãµes" onClick={() => {}} />
+          <NavItem icon={<Settings size={20} />} label="Configurações" onClick={() => {}} />
           <NavItem icon={<LogOut size={20} />} label="Sair" onClick={() => {}} />
         </div>
       </aside>
@@ -104,7 +102,6 @@ export default function App() {
   );
 }
 
-// â”€â”€â”€ Students / Dashboard Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -197,8 +194,8 @@ function StudentsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <StatCard label="Total de Alunos"    value={stats.total}  icon={<Users        className="text-blue-600"    />} trend="+12% este mÃªs" />
-          <StatCard label="Alunos Ativos"      value={stats.active} icon={<CheckCircle2 className="text-emerald-600" />} trend="94% de retenÃ§Ã£o" />
+          <StatCard label="Total de Alunos"    value={stats.total}  icon={<Users        className="text-blue-600"    />} trend="+12% este mês" />
+          <StatCard label="Alunos Ativos"      value={stats.active} icon={<CheckCircle2 className="text-emerald-600" />} trend="94% de retenção" />
           <StatCard label="Aulas Experimentais" value={stats.trial} icon={<Clock        className="text-amber-600"   />} trend="3 pendentes" />
         </div>
 
@@ -214,7 +211,7 @@ function StudentsPage() {
                   <th className="px-6 py-4 font-semibold">Status</th>
                   <th className="px-6 py-4 font-semibold">Plano</th>
                   <th className="px-6 py-4 font-semibold">Contato</th>
-                  <th className="px-6 py-4 font-semibold text-right">AÃ§Ãµes</th>
+                  <th className="px-6 py-4 font-semibold text-right">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -283,7 +280,7 @@ function StudentsPage() {
                   <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Nome Completo</label>
                   <input required type="text"
                     className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
-                    placeholder="Ex: JoÃ£o Silva"
+                    placeholder="Ex: João Silva"
                     value={newStudent.name} onChange={e => setNewStudent({ ...newStudent, name: e.target.value })}
                   />
                 </div>
@@ -341,7 +338,6 @@ function StudentsPage() {
   );
 }
 
-// â”€â”€â”€ Agenda Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function AgendaPage() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
@@ -415,7 +411,7 @@ function AgendaPage() {
   const counts = {
     total: schedules.length,
     pendentes: schedules.filter(s => s.status === 'Agendado').length,
-    concluidos: schedules.filter(s => s.status === 'ConcluÃ­do').length,
+    concluidos: schedules.filter(s => s.status === 'Concluído').length,
   };
 
   return (
@@ -442,9 +438,9 @@ function AgendaPage() {
 
       <div className="p-8 overflow-y-auto flex-1">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <StatCard label="Total"     value={counts.total}     icon={<Calendar     className="text-blue-600"    />} trend="histÃ³rico" />
+          <StatCard label="Total"     value={counts.total}     icon={<Calendar     className="text-blue-600"    />} trend="histórico" />
           <StatCard label="Agendados" value={counts.pendentes} icon={<Clock        className="text-amber-600"   />} trend="aguardando" />
-          <StatCard label="ConcluÃ­dos" value={counts.concluidos} icon={<CheckCircle2 className="text-emerald-600" />} trend="realizados" />
+          <StatCard label="Concluídos" value={counts.concluidos} icon={<CheckCircle2 className="text-emerald-600" />} trend="realizados" />
         </div>
 
         {loading ? (
@@ -478,7 +474,7 @@ function AgendaPage() {
                     <ScheduleStatusBadge status={s.status} />
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       {s.status === 'Agendado' && (<>
-                        <button onClick={() => handleUpdateStatus(s.id, 'ConcluÃ­do')} title="Concluir"
+                        <button onClick={() => handleUpdateStatus(s.id, 'Concluído')} title="Concluir"
                           className="p-1.5 text-emerald-500 hover:bg-emerald-50 rounded-lg transition-all"><CheckCheck size={15} /></button>
                         <button onClick={() => handleUpdateStatus(s.id, 'Cancelado')} title="Cancelar"
                           className="p-1.5 text-amber-500 hover:bg-amber-50 rounded-lg transition-all"><Ban size={15} /></button>
@@ -528,7 +524,7 @@ function AgendaPage() {
                       onChange={e => setNewSchedule({ ...newSchedule, scheduled_date: e.target.value })} />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">HorÃ¡rio</label>
+                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Horário</label>
                     <input required type="time"
                       className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                       value={newSchedule.scheduled_time}
@@ -536,10 +532,10 @@ function AgendaPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">DescriÃ§Ã£o da Aula</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Descrição da Aula</label>
                   <textarea rows={3}
                     className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 resize-none"
-                    placeholder="Ex: Aula de yoga para iniciantes, foco em respiraÃ§Ã£o..."
+                    placeholder="Ex: Aula de yoga para iniciantes, foco em respiração..."
                     value={newSchedule.description}
                     onChange={e => setNewSchedule({ ...newSchedule, description: e.target.value })} />
                 </div>
@@ -558,7 +554,6 @@ function AgendaPage() {
   );
 }
 
-// â”€â”€â”€ Financeiro Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function FinanceiroPage() {
   const [entries, setEntries] = useState<FinancialEntry[]>([]);
@@ -603,7 +598,7 @@ function FinanceiroPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Remover este lanÃ§amento?')) return;
+    if (!confirm('Remover este lançamento?')) return;
     const res = await fetch(`/api/financial?id=${id}`, { method: 'DELETE' });
     if (res.status === 204) setEntries(prev => prev.filter(e => e.id !== id));
   };
@@ -620,7 +615,7 @@ function FinanceiroPage() {
         <h2 className="text-lg font-bold text-slate-800">Financeiro</h2>
         <button onClick={() => setIsModalOpen(true)}
           className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors shadow-sm">
-          <Plus size={18} /> Novo LanÃ§amento
+          <Plus size={18} /> Novo Lançamento
         </button>
       </header>
 
@@ -673,18 +668,18 @@ function FinanceiroPage() {
               <thead>
                 <tr className="bg-slate-50/50 text-slate-500 text-xs uppercase tracking-wider">
                   <th className="px-6 py-4 font-semibold">Tipo</th>
-                  <th className="px-6 py-4 font-semibold">DescriÃ§Ã£o</th>
+                  <th className="px-6 py-4 font-semibold">Descrição</th>
                   <th className="px-6 py-4 font-semibold">Valor</th>
                   <th className="px-6 py-4 font-semibold">Vencimento</th>
                   <th className="px-6 py-4 font-semibold">Status</th>
-                  <th className="px-6 py-4 font-semibold text-right">AÃ§Ãµes</th>
+                  <th className="px-6 py-4 font-semibold text-right">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {loading ? (
                   <tr><td colSpan={6} className="px-6 py-12 text-center text-slate-400">Carregando...</td></tr>
                 ) : filtered.length === 0 ? (
-                  <tr><td colSpan={6} className="px-6 py-12 text-center text-slate-400">Nenhum lanÃ§amento encontrado.</td></tr>
+                  <tr><td colSpan={6} className="px-6 py-12 text-center text-slate-400">Nenhum lançamento encontrado.</td></tr>
                 ) : filtered.map(entry => (
                   <tr key={entry.id} className="hover:bg-slate-50/50 transition-colors group">
                     <td className="px-6 py-4">
@@ -738,7 +733,7 @@ function FinanceiroPage() {
               className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
             >
               <div className="p-6 border-b border-slate-100 flex items-center justify-between">
-                <h3 className="text-xl font-bold text-slate-800">Novo LanÃ§amento</h3>
+                <h3 className="text-xl font-bold text-slate-800">Novo Lançamento</h3>
                 <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600"><X size={20} /></button>
               </div>
               <form onSubmit={handleAdd} className="p-6 space-y-4">
@@ -759,10 +754,10 @@ function FinanceiroPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">DescriÃ§Ã£o</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Descrição</label>
                   <input required type="text"
                     className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
-                    placeholder="Ex: Mensalidade JoÃ£o Silva"
+                    placeholder="Ex: Mensalidade João Silva"
                     value={newEntry.description} onChange={e => setNewEntry({ ...newEntry, description: e.target.value })} />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -783,7 +778,7 @@ function FinanceiroPage() {
                 <div className="pt-2">
                   <button type="submit"
                     className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2">
-                    <DollarSign size={18} /> Registrar LanÃ§amento
+                    <DollarSign size={18} /> Registrar Lançamento
                   </button>
                 </div>
               </form>
@@ -795,7 +790,6 @@ function FinanceiroPage() {
   );
 }
 
-// â”€â”€â”€ Shared UI Components â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function NavItem({ icon, label, active = false, onClick }: { icon: React.ReactNode; label: string; active?: boolean; onClick: () => void }) {
   return (
@@ -839,7 +833,7 @@ function StatusBadge({ status }: { status: string }) {
 function ScheduleStatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
     'Agendado': 'bg-blue-100 text-blue-700',
-    'ConcluÃ­do': 'bg-emerald-100 text-emerald-700',
+    'Concluído': 'bg-emerald-100 text-emerald-700',
     'Cancelado': 'bg-slate-100 text-slate-500',
   };
   return (
