@@ -17,7 +17,7 @@ async function startServer() {
 
   app.use(express.json());
 
-  // Listar
+  // Listar aluno
   app.get("/api/students", async (_req, res) => {
     try {
       const { data, error } = await supabase
@@ -37,7 +37,7 @@ async function startServer() {
   });
 
 
-  // Criar
+  // Criar aluno
   app.post("/api/students", async (req, res) => {
     try {
       const body = req.body as StudentCreateInput;
@@ -93,7 +93,7 @@ async function startServer() {
     }
   });
 
-  // ── Agenda ────────────────────────────────────────────────────────────────
+  // ── Agenda ───
 
   app.get("/api/schedules", async (_req, res) => {
     try {
@@ -161,7 +161,7 @@ async function startServer() {
     }
   });
 
-  // ── Financeiro ────────────────────────────────────────────────────────────
+  // ── Financeiro ───
 
   app.get("/api/financial", async (_req, res) => {
     try {

@@ -18,6 +18,7 @@ import {
   TrendingUp,
   Clock,
   CheckCircle2,
+  XCircle,
   Plus,
   X,
   Trash2,
@@ -62,8 +63,7 @@ interface FinancialEntry {
   created_at: string;
 }
 
-type Page = 'dashboard' | 'agenda' | 'financeiro';
-
+type Page = 'dashboard' | 'agenda' | 'financeiro' | 'alunos';
 
 export default function App() {
   const [page, setPage] = useState<Page>('dashboard');
@@ -80,7 +80,7 @@ export default function App() {
 
           <nav className="space-y-1">
             <NavItem icon={<LayoutDashboard size={20} />} label="Dashboard" active={page === 'dashboard'} onClick={() => setPage('dashboard')} />
-            <NavItem icon={<Users size={20} />} label="Alunos" active={page === 'dashboard'} onClick={() => setPage('dashboard')} />
+            <NavItem icon={<Users size={20} />} label="Alunos" active={page === 'alunos'} onClick={() => setPage('alunos')} />
             <NavItem icon={<CalendarDays size={20} />} label="Agenda" active={page === 'agenda'} onClick={() => setPage('agenda')} />
             <NavItem icon={<TrendingUp size={20} />} label="Financeiro" active={page === 'financeiro'} onClick={() => setPage('financeiro')} />
           </nav>
@@ -94,7 +94,8 @@ export default function App() {
 
       {/* Page Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        {page === 'dashboard'  && <StudentsPage />}
+        {page === 'dashboard'  && <StudentsPage showWelcome />}
+        {page === 'alunos'  && <StudentsPage />}
         {page === 'agenda'     && <AgendaPage />}
         {page === 'financeiro' && <FinanceiroPage />}
       </main>
@@ -103,7 +104,7 @@ export default function App() {
 }
 
 
-function StudentsPage() {
+function StudentsPage({ showWelcome = false }: { showWelcome?: boolean }) {
   const [students, setStudents] = useState<Student[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -188,10 +189,13 @@ function StudentsPage() {
       </header>
 
       <div className="p-8 overflow-y-auto flex-1">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-slate-800 mb-1">Bem-vindo ao VOLL</h2>
-          <p className="text-slate-500 text-sm">Gerencie seus alunos e acompanhe o crescimento do seu studio.</p>
-        </div>
+        {showWelcome && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-slate-800 mb-1">Bem-vindo ao VOLL</h2>
+            <p className="text-slate-500 text-sm">Gerencie seus alunos e acompanhe o crescimento do seu studio.</p>
+          </div>
+        )}
+      
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <StatCard label="Total de Alunos"    value={stats.total}  icon={<Users        className="text-blue-600"    />} trend="+12% este mês" />
@@ -411,6 +415,7 @@ function AgendaPage() {
   const counts = {
     total: schedules.length,
     pendentes: schedules.filter(s => s.status === 'Agendado').length,
+    cancelados: schedules.filter(s => s.status === 'Cancelado').length,
     concluidos: schedules.filter(s => s.status === 'Concluído').length,
   };
 
@@ -437,9 +442,10 @@ function AgendaPage() {
       </header>
 
       <div className="p-8 overflow-y-auto flex-1">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <StatCard label="Total"     value={counts.total}     icon={<Calendar     className="text-blue-600"    />} trend="histórico" />
           <StatCard label="Agendados" value={counts.pendentes} icon={<Clock        className="text-amber-600"   />} trend="aguardando" />
+          <StatCard label="Cancelados" value={counts.cancelados} icon={<XCircle      className="text-red-600"   />} trend="cancelados" />
           <StatCard label="Concluídos" value={counts.concluidos} icon={<CheckCircle2 className="text-emerald-600" />} trend="realizados" />
         </div>
 
