@@ -25,7 +25,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 
 interface Student {
-  id: number;
+  id: string;
   name: string;
   email: string;
   phone: string;
@@ -58,7 +58,7 @@ export default function App() {
       const data = await response.json();
       setStudents(data);
     } catch (error) {
-      console.error('Error fetching students:', error);
+      console.error('Erro ao buscar alunos:', error);
     } finally {
       setLoading(false);
     }
@@ -78,7 +78,7 @@ export default function App() {
         setNewStudent({ name: '', email: '', phone: '', plan: 'Mensal', status: 'Ativo' });
       }
     } catch (error) {
-      console.error('Error adding student:', error);
+      console.error('Erro ao adicionar aluno:', error);
     }
   };
 

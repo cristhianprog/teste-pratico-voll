@@ -1,49 +1,99 @@
 import express from "express";
 import { createServer as createViteServer } from "vite";
-import Database from "better-sqlite3";
 import path from "path";
+import { supabase } from "./src/server/supabaseClient";
 
-const db = new Database("pilates.db");
-
-// Initialize database
-db.exec(`
-  CREATE TABLE IF NOT EXISTS students (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    email TEXT,
-    phone TEXT,
-    status TEXT DEFAULT 'Ativo',
-    plan TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )
-`);
+type StudentCreateInput = {
+  name: string;
+  email?: string;
+  phone?: string;
+  status?: string;
+  plan?: string;
+};
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = Number(process.env.PORT) || 3000;
 
   app.use(express.json());
 
-  // API Routes
-  app.get("/api/students", (req, res) => {
-    const students = db.prepare("SELECT * FROM students ORDER BY created_at DESC").all();
-    res.json(students);
+  // Listar
+  app.get("/api/students", async (_req, res) => {
+    try {
+      const { data, error } = await supabase
+        .from("students")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        return res.status(500).json({ message: error.message });
+      }
+
+      return res.json(data ?? []);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Erro inesperado" });
+    }
   });
 
-  app.post("/api/students", (req, res) => {
-    const { name, email, phone, status, plan } = req.body;
-    const info = db.prepare(
-      "INSERT INTO students (name, email, phone, status, plan) VALUES (?, ?, ?, ?, ?)"
-    ).run(name, email, phone, status || 'Ativo', plan);
-    
-    const newStudent = db.prepare("SELECT * FROM students WHERE id = ?").get(info.lastInsertRowid);
-    res.status(201).json(newStudent);
+
+  // Criar
+  app.post("/api/students", async (req, res) => {
+    try {
+      const body = req.body as StudentCreateInput;
+
+      if (!body?.name || typeof body.name !== "string" || body.name.trim().length < 2) {
+        return res.status(400).json({ message: "O campo 'nome' é obrigatório." });
+      }
+
+      const payload = {
+        name: body.name.trim(),
+        email: body.email?.trim() || null,
+        phone: body.phone?.trim() || null,
+        status: body.status?.trim() || "Ativo",
+        plan: body.plan?.trim() || null,
+      };
+
+      const { data, error } = await supabase
+        .from("students")
+        .insert(payload)
+        .select("*")
+        .single();
+
+      if (error) {
+        return res.status(500).json({ message: error.message });
+      }
+
+      return res.status(201).json(data);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Erro inesperado" });
+    }
   });
 
-  app.delete("/api/students/:id", (req, res) => {
-    db.prepare("DELETE FROM students WHERE id = ?").run(req.params.id);
-    res.status(204).send();
+  // Deletar
+  app.delete("/api/students/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      if (!id || typeof id !== "string") {
+        return res.status(400).json({ message: "ID inválido" });
+      }
+
+      const { error } = await supabase.from("students").delete().eq("id", id);
+
+      if (error) {
+        return res.status(500).json({ message: error.message });
+      }
+
+      return res.status(204).send();
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Erro inesperado" });
+    }
   });
+
+  console.log('process.env.NODE_ENV :', process.env.NODE_ENV);
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
@@ -60,7 +110,7 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`VOLL Candidate running on http://localhost:${PORT}`);
+    console.log(`VOLL Candidate rodando em http://localhost:${PORT}`);
   });
 }
 
