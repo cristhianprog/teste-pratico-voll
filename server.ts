@@ -93,8 +93,6 @@ async function startServer() {
     }
   });
 
-  console.log('process.env.NODE_ENV :', process.env.NODE_ENV);
-
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
